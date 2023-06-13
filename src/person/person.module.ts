@@ -29,12 +29,12 @@ function asyncFn() {
       },
       inject: ['person2'],
     },
-    {
-      provide: 'person4',
-      async useFactory(name: string) {
-        return await asyncFn();
-      },
-    },
+    // {
+    //   provide: 'person4',
+    //   async useFactory(name: string) {
+    //     return await asyncFn();
+    //   },
+    // },
   ],
 })
 export class PersonModule {}

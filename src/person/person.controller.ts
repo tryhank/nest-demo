@@ -12,6 +12,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
+import { GlobalModuleService } from '../global-module/global-module.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
@@ -20,9 +21,8 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 export class PersonController {
   constructor(
     private readonly personService: PersonService,
-    @Inject('person2') private readonly person2,
-    @Inject('person3') private readonly person3,
-    @Inject('person4') private readonly person4,
+    @Inject('person2') private readonly person2, // @Inject('person3') private readonly person3, // @Inject('person4') private readonly person4,
+    private readonly globalService: GlobalModuleService,
   ) {}
 
   // formdata 传参 Content-Type: multipart/form-data
@@ -48,8 +48,7 @@ export class PersonController {
   // query 传参
   @Get()
   findAll(@Query('name') name: string, @Query('age') age: number) {
-    console.log(this.person4, '111');
-    return `name: ${name},age: ${age}`;
+    return this.globalService.findOne(1);
   }
 
   // url param 传参
