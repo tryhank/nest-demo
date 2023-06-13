@@ -1,11 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  OnModuleInit,
+  OnApplicationBootstrap,
+  OnModuleDestroy,
+  BeforeApplicationShutdown,
+  OnApplicationShutdown,
+} from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { GlobalModuleService } from './global-module.service';
 import { CreateGlobalModuleDto } from './dto/create-global-module.dto';
 import { UpdateGlobalModuleDto } from './dto/update-global-module.dto';
 
 @Controller('global-module')
-export class GlobalModuleController {
-  constructor(private readonly globalModuleService: GlobalModuleService) {}
+export class GlobalModuleController
+  implements
+    OnModuleInit,
+    OnApplicationBootstrap,
+    OnModuleDestroy,
+    BeforeApplicationShutdown,
+    OnApplicationShutdown
+{
+  onModuleInit() {
+    console.log('onModuleInit');
+  }
+
+  onApplicationBootstrap() {
+    console.log('onApplicationBootstrap');
+  }
+
+  onModuleDestroy() {
+    console.log('onModuleDestroy');
+  }
+
+  beforeApplicationShutdown(signal?: string) {
+    console.log(signal, 'beforeApplicationShutdown');
+  }
+
+  onApplicationShutdown(signal?: string) {
+    console.log(
+      this.moduleRef.get<GlobalModuleService>(GlobalModuleService).findAll(),
+    );
+    console.log(signal, 'onApplicationShutdown');
+  }
+
+  constructor(
+    private readonly globalModuleService: GlobalModuleService,
+    private moduleRef: ModuleRef,
+  ) {}
 
   @Post()
   create(@Body() createGlobalModuleDto: CreateGlobalModuleDto) {
@@ -23,7 +70,10 @@ export class GlobalModuleController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGlobalModuleDto: UpdateGlobalModuleDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateGlobalModuleDto: UpdateGlobalModuleDto,
+  ) {
     return this.globalModuleService.update(+id, updateGlobalModuleDto);
   }
 
