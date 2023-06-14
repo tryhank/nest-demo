@@ -10,12 +10,15 @@ import {
   UseInterceptors,
   UploadedFiles,
   Inject,
+  UseGuards,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { GlobalModuleService } from '../global-module/global-module.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { RoleMeta, Combine, MyQuery } from './test.decorator';
+import { RoleGuard } from './role.guard';
 
 @Controller('person')
 export class PersonController {
@@ -52,11 +55,11 @@ export class PersonController {
   }
 
   // url param 传参
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    console.log(this.person2);
-    return this.personService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   console.log(this.person2);
+  //   return this.personService.findOne(+id);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePersonDto: UpdatePersonDto) {
@@ -66,5 +69,23 @@ export class PersonController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.personService.remove(+id);
+  }
+
+  // 自定义装饰器
+  @Get('role')
+  @RoleMeta('anna')
+  @UseGuards(RoleGuard)
+  getRole(@Query('role') role: string) {
+    return role;
+  }
+
+  @Combine('role2', 'anna1')
+  getRole2(@Query('role') role: string) {
+    return role;
+  }
+
+  @Get('helloworld')
+  getHelloworld(@MyQuery() name: any) {
+    return name;
   }
 }
