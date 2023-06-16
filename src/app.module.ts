@@ -14,13 +14,13 @@ import { HelloWorldMiddleware } from './hello-world.middleware';
 
 @Module({
   imports: [
-    PersonModule,
-    GlobalModuleModule,
-    CircularReferModule,
-    DynamicModuleModule.register({
-      name: 'admin',
-      role: 'administrator',
-    }),
+    // PersonModule,
+    // GlobalModuleModule,
+    // CircularReferModule,
+    // DynamicModuleModule.register({
+    //   name: 'admin',
+    //   role: 'administrator',
+    // }),
   ],
   controllers: [AppController],
   providers: [AppService],
