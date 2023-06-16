@@ -11,6 +11,7 @@ import { GlobalModuleModule } from './global-module/global-module.module';
 import { CircularReferModule } from './circular-refer/circular-refer.module';
 import { DynamicModuleModule } from './dynamic-module/dynamic-module.module';
 import { HelloWorldMiddleware } from './hello-world.middleware';
+import { LoggerModuleModule } from './logger-module/logger-module.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { HelloWorldMiddleware } from './hello-world.middleware';
     //   name: 'admin',
     //   role: 'administrator',
     // }),
+    LoggerModuleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

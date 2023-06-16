@@ -13,6 +13,8 @@ import {
   UploadedFile,
   UploadedFiles,
   Body,
+  Inject,
+  Logger,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TimeInterceptor } from './time.interceptor';
@@ -24,6 +26,7 @@ import {
   AnyFilesInterceptor,
 } from '@nestjs/platform-express';
 import { storage } from './storage';
+import { MyLogger } from './logger-module/my-logger';
 
 enum Test {
   aaa,
@@ -34,6 +37,9 @@ enum Test {
 @Controller()
 @UseInterceptors(TimeInterceptor)
 export class AppController {
+  // @Inject(MyLogger) private mylog: MyLogger;
+  private mylog = new MyLogger();
+  private logger = new Logger();
   constructor(private readonly appService: AppService) {}
 
   @Get()
@@ -150,5 +156,21 @@ export class AppController {
   ) {
     console.log('body', body);
     console.log('files', files);
+  }
+
+  @Get('log')
+  log() {
+    this.mylog.debug('aaa', AppController.name);
+    this.mylog.error('bbb', AppController.name);
+    this.mylog.log('ccc', AppController.name);
+    this.mylog.verbose('ddd', AppController.name);
+    this.mylog.warn('eee', AppController.name);
+
+    this.logger.debug('aaa', AppController.name);
+    this.logger.error('bbb', AppController.name);
+    this.logger.log('ccc', AppController.name);
+    this.logger.verbose('ddd', AppController.name);
+    this.logger.warn('eee', AppController.name);
+    return 'log';
   }
 }
