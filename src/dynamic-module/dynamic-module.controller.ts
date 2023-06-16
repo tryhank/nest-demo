@@ -7,18 +7,22 @@ import {
   Param,
   Delete,
   Inject,
+  ValidationPipe,
 } from '@nestjs/common';
 import { DynamicModuleService } from './dynamic-module.service';
 import { CreateDynamicModuleDto } from './dto/create-dynamic-module.dto';
 import { UpdateDynamicModuleDto } from './dto/update-dynamic-module.dto';
 import { MODULE_OPTIONS_TOKEN, DynamicModuleOptions } from './dynamic-define';
+import { MyValidationPipe } from './my-validation.pipe';
 @Controller('dynamic-module')
 export class DynamicModuleController {
   @Inject(MODULE_OPTIONS_TOKEN) private options: DynamicModuleOptions;
   constructor(private readonly dynamicModuleService: DynamicModuleService) {}
 
   @Post()
-  create(@Body() createDynamicModuleDto: CreateDynamicModuleDto) {
+  create(
+    @Body(MyValidationPipe) createDynamicModuleDto: CreateDynamicModuleDto,
+  ) {
     return this.dynamicModuleService.create(createDynamicModuleDto);
   }
 
