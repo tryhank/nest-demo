@@ -28,8 +28,8 @@ import { HelloWorldMiddleware } from './hello-world.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     // consumer.apply(HelloWorldMiddleware).forRoutes('*');
-    consumer
-      .apply(HelloWorldMiddleware)
-      .forRoutes({ path: 'hello', method: RequestMethod.GET });
+    // consumer
+    //   .apply(HelloWorldMiddleware)
+    //   .forRoutes({ path: 'hello', method: RequestMethod.GET });
   }
 }
