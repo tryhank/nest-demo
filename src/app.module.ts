@@ -15,6 +15,7 @@ import { LoggerModuleModule } from './logger-module/logger-module.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { createClient } from 'redis';
 
 @Module({
   imports: [
@@ -45,7 +46,17 @@ import { User } from './user/entities/user.entity';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'REDIS_CLIENT',
+      async useFactory() {
+        const client = createClient();
+        await client.connect();
+        return client;
+      },
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

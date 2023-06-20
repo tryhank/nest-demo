@@ -44,8 +44,8 @@ export class AppController {
 
   @Get()
   @UseInterceptors(TimeInterceptor)
-  getHello(): string {
-    return this.appService.getHello();
+  async getHello(): Promise<string> {
+    return await this.appService.getHello();
   }
 
   @Get('hello')
