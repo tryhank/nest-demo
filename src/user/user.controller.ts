@@ -6,37 +6,52 @@ import {
   Patch,
   Param,
   Delete,
+  Inject,
+  UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '../auth.guard';
 @Controller('user')
 export class UserController {
+  @Inject(JwtService) private jwtService: JwtService;
+
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post('login')
+  async login(@Body(ValidationPipe) user: CreateUserDto) {
+    const result = await this.userService.login(user);
+    if (result) {
+      const token = await this.jwtService.signAsync({
+        user: {
+          id: result.id,
+          username: result.username,
+        },
+      });
+      return {
+        code: '200',
+        data: `bearer ${token}`,
+        msg: '登陆成功',
+      };
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Post('register')
+  async register(@Body(ValidationPipe) user: CreateUserDto) {
+    return await this.userService.register(user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get('aaa')
+  @UseGuards(AuthGuard)
+  aaa() {
+    return 'aaa';
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Get('bbb')
+  bbb() {
+    return 'bbb';
   }
 }
