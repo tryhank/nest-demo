@@ -15,9 +15,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '../auth.guard';
+import { ConfigService } from '@nestjs/config';
 @Controller('user')
 export class UserController {
   @Inject(JwtService) private jwtService: JwtService;
+  @Inject(ConfigService) private configService: ConfigService;
 
   constructor(private readonly userService: UserService) {}
 
@@ -52,6 +54,7 @@ export class UserController {
 
   @Get('bbb')
   bbb() {
+    console.log(this.configService.get('aaa'));
     return 'bbb';
   }
 }

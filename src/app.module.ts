@@ -17,6 +17,8 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { createClient } from 'redis';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
+import config from './config';
 
 @Module({
   imports: [
@@ -49,6 +51,10 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: {
         expiresIn: '7d',
       },
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config],
     }),
     LoggerModuleModule,
     UserModule,
