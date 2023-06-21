@@ -18,6 +18,7 @@ FROM node:18-alpine as production-stage
 
 COPY --from=build-stage /app/dist /app
 COPY --from=build-stage /app/package.json /app/package.json
+COPY --from=build-stage /app/config.yaml /app/config.yaml
 
 WORKDIR /app
 

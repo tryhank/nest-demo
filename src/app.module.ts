@@ -31,7 +31,7 @@ import config from './config';
     // }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'mysql-container',
       port: 3306,
       username: 'root',
       password: 'mysql01',
@@ -65,7 +65,12 @@ import config from './config';
     {
       provide: 'REDIS_CLIENT',
       async useFactory() {
-        const client = createClient();
+        const client = createClient({
+          socket: {
+            host: 'redis-container',
+            port: 6379,
+          },
+        });
         await client.connect();
         return client;
       },

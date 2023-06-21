@@ -55,6 +55,7 @@ export class UserController {
   @Get('bbb')
   bbb() {
     console.log(this.configService.get('aaa'));
+    console.log(this.configService.get('mysql'));
     return 'bbb';
   }
 }

@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  nest-app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    depends_on:
+      - mysql-container
+      - redis-container
+    ports:
+      - '3000:3000'
+    networks:
+      - nest-network
+  mysql-container:
+    image: mysql
+    volumes:
+      - /Users/zhaojunlong/mysql-volumes:/var/lib/mysql
+    networks:
+      - nest-network
+  redis-container:
+    image: redis
+    volumes:
+      - /Users/zhaojunlong/redis-volumes:/data
+    networks:
+      - nest-network
+networks:
+  nest-network:
+    driver: bridge
